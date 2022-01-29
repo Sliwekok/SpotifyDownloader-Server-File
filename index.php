@@ -80,7 +80,7 @@ function createFile($url, $csrf){
     }
     
     // create a absolute path to temp folder with stored songs
-    $absPath = "C:\Programy/Laragon/laragon/www/SpotifyDownloader/temp/";  
+    $absPath = "temp/";  
     $dir = $absPath.$csrf.'/';
     if(!mkdir($dir, 0777)) throwError("Can't create directory");
     if(!execCommand($dir, $url)) throwError("Something went wrong with executing command");
