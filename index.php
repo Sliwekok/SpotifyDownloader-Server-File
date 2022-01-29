@@ -61,6 +61,7 @@ function checkSpam($user, $url){
 
 if(!checkSpam($user, $url)) throwError("You did too many requests lately. Check again later");
 if(empty($url) || empty($csrf)) throwError("Pass right URL");
+if(strpos($url, 'https://open.spotify') !== 0 ) throwError("Pass right spotify link!");
 
 // initialize array of music songs files
 
@@ -80,8 +81,7 @@ function createFile($url, $csrf){
     }
     
     // create a absolute path to temp folder with stored songs
-    $absPath = "temp/";  
-    $dir = $absPath.$csrf.'/';
+    $dir = "temp/".$csrf.'/';
     if(!mkdir($dir, 0777)) throwError("Can't create directory");
     if(!execCommand($dir, $url)) throwError("Something went wrong with executing command");
     // initialize array of songs
