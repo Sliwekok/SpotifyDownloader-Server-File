@@ -4,6 +4,7 @@ session_start();
 require 'vendor/autoload.php';
 use Carbon\Carbon;
 
+// global funciton to create error message
 function throwError($message){
     header($_SERVER["SERVER_PROTOCOL"] . ' 500 Internal Server Error', true, 500);
     echo "$message";
@@ -23,6 +24,7 @@ $time   = (isset($_GET['csrf']) ? $_GET['csrf'] : '');
 $csrf   = hash('md5', $time);
 // csrf is here only to get some unique token to not mess up downloads
 // md5 hash since it's the fastest one
+
 // get user IP and store it in session to get some logs and prevent from spamming the server
 function checkSpam($user, $url){
     // allow max 10 requests per 10 minutes
@@ -58,15 +60,17 @@ function checkSpam($user, $url){
         return true;
     }
 }
-
+// check to prevent to many requests
 if(!checkSpam($user, $url)) throwError("You did too many requests lately. Check again later");
+// reject null requests
 if(empty($url) || empty($csrf)) throwError("Pass right URL");
+// check for right spotify links
 if(strpos($url, 'https://open.spotify') !== 0 ) throwError("Pass right spotify link!");
 
 // initialize array of music songs files
-
 function createFile($url, $csrf){
     
+    // exec command to find song via spotdl command
     function execCommand($dir, $url){
         $result = 0;
         $output = [];
